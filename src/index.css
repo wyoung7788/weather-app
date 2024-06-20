@@ -1,10 +1,36 @@
-body {
+@import url('https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyC1HcN_2x0tVRD-nS4ox5N-UQnRUAdHOS8');
+
+*{
+  box-sizing: border-box;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  padding: 0;
+}
+
+body {
+  font-family: 'Outfit', 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.app{
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  background-color: rba(0,0,0,0.4);
+  color: #fff;
+}
+
+.app:before{
+  content:'';
+  background: url(`./assets/beach.jpg`) no-repeat center center/cover;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
 }
 
 code {
