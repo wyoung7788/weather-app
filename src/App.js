@@ -1,59 +1,95 @@
-import "./App.css"
-import { fetchWeatherApi } from 'openmeteo';
-import Search from "./components/search/search";
-import React, {useState, useEffect} from 'react';
+import axios from 'axios'
+import React, {useState} from 'react';
 
 function App(){
 
-  // responses: holds current state, weather data
-  // setResponses: update responses state
-  const [responses, setResponses] = useState(null);
+  const [data, setData] = useState({})
   const [location, setLocation] = useState('');
+  const [stateCode, setStateCode] = useState('');
+  const [countryCode, setCountryCode] = useState('');
+  const [coords, setCoords]= useState({ lat: '', lon:''});
 
-  useEffect(() => {
-    const fetchWeather = async () => {
-      const url = "https://api.open-meteo.com/v1/forecast";
-      const params = {
-        "latitude": 52.52,
-        "longitude": 13.41,
-        "hourly": "temperature_2m"
-      };
+  const searchLocation = async (event) =>{
+    if (event.key === 'Enter'){
+      //get location based on input
+      const geo_url= `https://api.openweathermap.org/geo/1.0/direct?q=${location},{state code},{country code}&limit={limit}&appid=5517fadcca0ae0eed1a332059c8f05b1`
+      
       try{
-        const responses = await fetchWeather(url, params);
-        setResponses(responses);
+        const geoResponse = await axios.get(geo_url);
+        if (geoResponse.data.length > 0){
+          const {lat, lon} = geoResponse.data[0];
+          setCoords({ lat, lon });
+        
+        // get weather details 
+        const weather_url = `https://api.openweathermap.org/data/3.0/onecall?lat=${coords[0]}&lon=${coords[1]}&exclude={part}&appid=5517fadcca0ae0eed1a332059c8f05b1`
+        const weatherResponse = await axios.get(weather_url);
+        setData(weatherResponse.data);
+        console.log(weatherResponse.data);
+      } else{
+        console.error("Location not found");
       }
-      catch(error){
-        console.error("Error fetching weather.");
+    } catch (error){
+        console.error("Error fetching data:", error);
       }
-    };
-
-    fetchWeather();
-  }, []);
+      setLocation('');
+      setStateCode('');
+      setCountryCode('');
+  }
+    
   return (
     <div className="app">
       <div className="search">
         <input
         value={location}
-        onChange={(e) => setLocation(e.target.value)}
-        placeholder='Enter location'
+        //take in city name, backend to convert to coordinates
+        onChange={(event) => setLocation(event.target.value)}
+        placeholder='Enter city'
+        type="text"
+        />
+        <input
+          value={stateCode}
+          onChange={(event) => setStateCode(event.target.value)}
+          placeholder="Enter state code (US only)"
+          type="text"
+        />
+        <input
+          value={countryCode}
+          onChange={(event) => setCountryCode(event.target.value)}
+          placeholder="Enter country code"
+          type="text"
+        />
+        <input
+          onKeyPress={searchLocation}
+          placeholder="Press Enter to search"
+          type="text"
         />
       </div>
     <div className="container">
       <div className="top">
         <div className="location">
-          <p>Dallas</p>
+          <p>{data.timezone || 'Location'}</p>
         </div>
         <div className="temp">
-          <h1>60F</h1>
+          {data.current && <h1>{Math.round(data.current.temp)}°F</h1>}
         </div>
         <div className="description">
-          <p>Clouds</p>
+          {data.current && <p>{data.current.weather[0].description}</p>}
         </div>
       </div>
-      <div className="bottom"></div>
-      <Search />
+      <div className="bottom">
+        <div className="feels">
+        {data.current && <p>Feels Like: {Math.round(data.current.feels_like)}°F</p>}
+        </div>
+        <div className="humidity">
+        {data.current && <p>Humidity: {data.current.humidity}%</p>}
+        </div>
+        <div className="wind">
+        {data.current && <p>Wind: {Math.round(data.current.wind_speed)} MPH</p>}
+        </div>
+      </div>
     </div>
     </div>
   );
+}
 }
 export default App;
