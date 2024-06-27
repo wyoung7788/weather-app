@@ -1,5 +1,6 @@
 @import url('https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyC1HcN_2x0tVRD-nS4ox5N-UQnRUAdHOS8');
 
+
 *{
   box-sizing: border-box;
   margin: 0;
@@ -22,11 +23,18 @@ h1{
   font-size: 6rem;
 }
 
+.label{
+  font-size: 1rem;
+  padding-top: .7rem;
+  padding-bottom: .7rem;
+  display: flex;
+  justify-content: center;
+}
 .app{
   width: 100%;
   height: 100vh;
   position: relative;
-  background-color: rba(0,0,0,0.4);
+  background-color: rgba(0,0,0,0.4);
   color: #fff;
 }
 
