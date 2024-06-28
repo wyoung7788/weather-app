@@ -7,6 +7,11 @@
   padding: 0;
 }
 
+.temp{
+  font-size: 6rem;
+  font-weight: bold;
+}
+
 body {
   font-family: 'Outfit', 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -22,6 +27,7 @@ p{
 h1{
   font-size: 6rem;
 }
+
 
 .label{
   font-size: 1rem;
@@ -79,7 +85,14 @@ h1{
   justify-content: space-between;
 }
 
+
+
 .app .top{
+  width: 100%;
+  margin: 1rem auto;
+}
+
+.app .bottom{
   width: 100%;
   margin: 1rem auto;
 }
