@@ -18,7 +18,7 @@ function App(){
         if (geo_response.data.length > 0){
         const {lat, lon} = geo_response.data[0];
 
-        const weather_url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}lon=${lon}&appid=5517fadcca0ae0eed1a332059c8f05b1`
+        const weather_url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=5517fadcca0ae0eed1a332059c8f05b1`
         const weather_response = await axios.get(weather_url);
         setData(weather_response.data)
       } else{
@@ -67,7 +67,7 @@ function App(){
             <p>Humidity</p>
           </div>
           <div className="wind">
-          {data.wind ? <p className='bold'>{data.wind.speed.toFixed()}MPH</p>: null}
+          {data.wind ? <p className='bold'>{data.wind.speed.toFixed()} MPH</p>: null}
             <p>Wind Speed</p>
           </div>
         </div>     
