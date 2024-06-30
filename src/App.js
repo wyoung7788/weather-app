@@ -1,10 +1,35 @@
 import axios from 'axios';
 import React, {useState} from 'react';
+import LocationButton from './LocationButton';
 
 function App(){
   const [data, setData] = useState({});
   const [location, setLocation] = useState('');
   const kelvintoFahrenheit = (k) => ((k-273.15)*9/5 + 32).toFixed(0);
+
+  const success = async (position) =>{
+      const {lat, lon}= position.coords;
+      const weather_url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=5517fadcca0ae0eed1a332059c8f05b1`
+      
+      try{
+      const weather_response = await axios.get(weather_url);
+      setData(weather_response.data);
+      } catch (error) {
+        console.error('Error fetching data');
+      }
+  };
+  const error = () => {
+    console.error('Unable to retrieve your location');
+  };
+
+  function handleLocationClick(){
+    if (navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(success, error);
+    }
+    else{
+      console.log("Geolocation not supported");
+    }
+  }
 
   const searchLocation = async () =>{
 
@@ -31,8 +56,10 @@ function App(){
       setLocation('')
   };
 
+
   return (
     <div className="app">
+    <div class="top-contain">
       <div className="search">
         <input
         value={location}
@@ -40,6 +67,8 @@ function App(){
         placeholder='Enter city'
         type="text"
         />
+         <LocationButton className="locate" onClick={handleLocationClick}/>
+      </div>
       </div>
       <button className="enter_button" onClick={searchLocation}>
       Search
@@ -47,16 +76,22 @@ function App(){
         <div className="container">
           <div className="top">
             <div className="location">
-            <p>{data.name}</p>
+            <h1>{data.name}</h1>
             </div>
             <div className="temp">
             <p>{data.main? `${kelvintoFahrenheit(data.main.temp)}°F` : ''}</p>
             </div>
+            
+            <div className= "icon">
+              {data.weather ? <img
+              src={`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
+              alt= "Weather icon"
+              /> : null}
+            </div>
             <div className="description">
             {data.weather ? <p>{data.weather[0].main}</p> : null}
             </div>
-          </div>
-        
+        </div>
         <div className="bottom">
           <div className="feels">
           <p>{data.main? `${kelvintoFahrenheit(data.main.feels_like)}°F` : ''}</p>
@@ -71,8 +106,8 @@ function App(){
             <p>Wind Speed</p>
           </div>
         </div>     
-        </div>
-        </div>
+      </div>
+    </div>
 );
 }
 export default App;

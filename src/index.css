@@ -29,7 +29,6 @@ body {
   align-items: center;
 }
 
-
 p {
   font-size: 2rem;
 }
@@ -46,9 +45,24 @@ h1 {
   justify-content: center;
 }
 
-.app .search {
-  text-align: center;
-  padding: 1rem;
+.top-contain{
+  margin-top: 20px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.locate{
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+.search{
+  display: flex;
+  align-items: center;
 }
 
 .app input {
@@ -69,6 +83,7 @@ h1 {
   background: rgba(255, 255, 255, 0.1);
   color: #f8f8f8;
   cursor: pointer;
+  margin-top: 20px;
 }
 
 ::placeholder {
@@ -83,6 +98,7 @@ h1 {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding-bottom: 50px;
 }
 
 .app .top,
@@ -91,10 +107,17 @@ h1 {
   margin: 1rem auto;
 }
 
+.app .icon{
+  position: absolute;
+  right: 20%;
+  top: 40%;
+  transform-origin: 0 0;
+}
+
 .app .description {
   position: absolute;
   right: 0%;
-  top: 50%;
+  top: 55%;
   transform-origin: 0 0;
   transform: rotate(269deg);
 }
@@ -105,7 +128,7 @@ h1 {
   text-align: center;
   padding: 1rem;
   border-radius: 12px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 .bold {
