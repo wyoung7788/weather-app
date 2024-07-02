@@ -6,6 +6,11 @@
   padding: 0;
 }
 
+
+.button{ 
+  width: 5vh;
+}
+
 body {
   font-family: 'Outfit', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -47,21 +52,18 @@ h1 {
 
 .top-contain{
   margin-top: 20px;
-  display: inline-flex;
-  justify-content: center;
   align-items: center;
+  display: flex;
+  justify-content: space-between;
+
 }
 
 .locate{
   width: 50px;
   height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 10px;
 }
+  
 .search{
-  display: flex;
   align-items: center;
 }
 
