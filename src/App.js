@@ -9,32 +9,27 @@ function App(){
   const kelvintoFahrenheit = (k) => ((k-273.15)*9/5 + 32).toFixed(0);
 
 
-  const success = async (position) =>{
-      const {lat, lon}= position.coords;
-      const weather_url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=5517fadcca0ae0eed1a332059c8f05b1`
-      
-      try{
-      const weather_response = await axios.get(weather_url);
-      setData(weather_response.data);
-      } catch (error) {
-        console.error('Error fetching data');
-      }
-  };
-  const error = () => {
-    console.error('Unable to retrieve your location');
-  };
-
   function handleLocationClick(){
     if (navigator.geolocation){
-      navigator.geolocation.getCurrentPosition(success, error);
+      navigator.geolocation.getCurrentPosition(
+        (position) =>{
+        const {latitude, longitude} = position.coords;
+        searchLocation(latitude, longitude);
+    },
+    (error) => {
+      console.error("Error getting user location", error);
     }
-    else{
-      console.log("Geolocation not supported");
-    }
+    );
   }
+};
 
-  const searchLocation = async () =>{
-
+  const searchLocation = async (latitude, longitude) =>{
+      let lat, lon;
+      if (latitude !== undefined && longitude !== undefined){
+        lat = latitude;
+        lon = longitude;
+      }
+      else{
       // convert inputted "San Diego" to coordinates 
       //(and then load onto screen)
       // take coordinates to call url to get weather details
@@ -43,20 +38,28 @@ function App(){
       try{
         const geo_response = await axios.get(geo_url);
         if (geo_response.data.length > 0){
-        const {lat, lon} = geo_response.data[0];
-
+            lat = geo_response.data[0].lat;
+            lon = geo_response.data[0].lon;
+        } else{
+          console.error('Error fetching data');
+          return;
+        }
+      }
+      catch(error){
+        console.error('Error fetching data', error);
+        return;
+      }
+    }
+      try{
         const weather_url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=5517fadcca0ae0eed1a332059c8f05b1`
         const weather_response = await axios.get(weather_url);
         setData(weather_response.data)
-      } else{
+      } catch(error){
         console.error('No data for specified location')
       }
-    }
-    catch(error){
-      console.error('Error fetching data', error);
-    }
-      setLocation('')
+      setLocation('');
   };
+  
 
 
   return (
@@ -72,7 +75,7 @@ function App(){
          <LocationButton className="locate" onClick={handleLocationClick}/>
       </div>
       </div>
-      <button className="enter_button" onClick={searchLocation}>
+      <button className="enter_button" onClick={() => searchLocation()}>
       Search
     </button>
         <div className="container">
