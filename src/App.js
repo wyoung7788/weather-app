@@ -96,16 +96,18 @@ function App(){
         </div>
         <div className="bottom">
           <div className="feels">
-          <p>{data.main? `${kelvintoFahrenheit(data.main.feels_like)}°F` : ''}</p>
-            <p>Feels like</p>
+          <p>Feels</p>
+          <p className='bold'> 
+      {data.main ? `${kelvintoFahrenheit(data.main.feels_like)}°F` : ''}
+      </p>
           </div>
           <div className="humidity">
+          <p>Humidity</p>
           {data.main ? <p className='bold'>{data.main.humidity}%</p>: null}
-            <p>Humidity</p>
           </div>
           <div className="wind">
+          <p>Wind Speed</p>
           {data.wind ? <p className='bold'>{data.wind.speed.toFixed()} MPH</p>: null}
-            <p>Wind Speed</p>
           </div>
         </div>     
       </div>
